@@ -93,6 +93,7 @@ class HashMap:
 
         Table resizes are doubled from its capacity and the load factor is greater than or equal to 0.5.
         """
+        # table must resize to DOUBLE current capacity when this method is called and load factor >= 0.5
         pass
 
     def table_load(self) -> float:
