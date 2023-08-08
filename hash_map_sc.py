@@ -186,7 +186,7 @@ class HashMap:
 
         # update new values of new hash map
         self._buckets = new_hash_map._buckets
-        self._capacity = new_capacity
+        self._capacity = new_hash_map._capacity
 
 
     def get(self, key: str):
@@ -259,12 +259,12 @@ class HashMap:
         keys_and_values = DynamicArray()
 
         # traverse through hash map and get the bucket
-        for index in range(self._capacity):
+        for bucket in range(self._capacity):
 
             # bucket is not empty, append key-value pairs into dynamic array
-            if self._buckets[index].length() != 0:
+            if self._buckets[bucket].length() != 0:
 
-                for item in self._buckets[index]:
+                for item in self._buckets[bucket]:
                     keys_and_values.append((item.key, item.value))
 
         return keys_and_values
