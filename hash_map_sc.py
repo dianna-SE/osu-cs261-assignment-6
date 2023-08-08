@@ -163,10 +163,10 @@ class HashMap:
         if new_capacity < 1 or new_capacity <= self._size:
             return
 
+        print("old load factor", self.table_load())
         # not prime, change to next highest prime number
         if not self._is_prime(new_capacity):
             new_capacity = self._next_prime(new_capacity)
-            print("new capacity", new_capacity)
 
         new_buckets = DynamicArray()
 
@@ -191,14 +191,15 @@ class HashMap:
                     new_hash_map._buckets[new_index].insert(item.key, item.value)
                     new_buckets[new_index].insert(item.key, item.value)
 
+        print("new load factor", self.table_load())
+        # update new values of new hash map
+        self._buckets = new_hash_map._buckets
+        self._capacity = new_hash_map._capacity
+
         # Check load factor and trigger another resize if needed
         load_factor = self._size / self._capacity
         if load_factor >= 1:
             self.resize_table(self._capacity * 2)  # Double the capacity
-
-        # update new values of new hash map
-        self._buckets = new_hash_map._buckets
-        self._capacity = new_hash_map._capacity
 
     def get(self, key: str):
         """
