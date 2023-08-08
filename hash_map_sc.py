@@ -190,8 +190,19 @@ class HashMap:
         Method that returns the value using the key and returns None if the key does not exist within
         the hash map.
         """
+        # get the hash using key
+        hash_value = self._hash_function(key)
+        index = hash_value % self.get_capacity()  # index = hash % array_size
 
-        pass
+        # get the bucket (dynamic array) corresponding to the hash value
+        bucket = self._buckets.get_at_index(index)
+
+        # traverse through the bucket to find the key
+        for item in bucket:
+            if item.key == key:
+                return item.value
+
+        return None
 
     def contains_key(self, key: str) -> bool:
         """
