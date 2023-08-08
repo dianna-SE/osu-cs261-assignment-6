@@ -160,10 +160,7 @@ class HashMap:
         the new hash map.
         """
 
-        if new_capacity < 1:
-            return
-
-        if self._size > new_capacity:
+        if new_capacity < 1 or new_capacity <= self._size:
             return
 
         # not prime, change to next highest prime number
