@@ -178,15 +178,10 @@ class HashMap:
                 for item in self._buckets[num]:
                     new_hash_map.put(item.key, item.value)
 
-        # count the new size for each bucket (linked list)
-        new_size = 0
-        for num in range(self._capacity):
-            new_size += self._buckets[num].length()
-
         # update new values of new hash map
         self._buckets = new_hash_map._buckets
-        self._size = new_size
-        self._capacity = new_capacity
+        self._capacity = new_hash_map._capacity
+
 
     def get(self, key: str):
         """
@@ -342,13 +337,13 @@ if __name__ == "__main__":
     # m.clear()
     # print(m.get_size(), m.get_capacity())
 
-    print("\nPDF - resize example 1")
-    print("----------------------")
-    m = HashMap(20, hash_function_1)
-    m.put('key1', 10)
-    print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
-    m.resize_table(30)
-    print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
+    # print("\nPDF - resize example 1")
+    # print("----------------------")
+    # m = HashMap(20, hash_function_1)
+    # m.put('key1', 10)
+    # print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
+    # m.resize_table(30)
+    # print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
 
     print("\nPDF - resize example 2")
     print("----------------------")
