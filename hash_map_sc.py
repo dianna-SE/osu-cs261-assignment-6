@@ -175,8 +175,6 @@ class HashMap:
             new_buckets.append(LinkedList())
 
         # prime, resize the hash map and create new hash map to new capacity
-        new_hash_map = HashMap(new_capacity, self._hash_function)
-
         # traverse through hash map
         for num in range(self._capacity):
 
@@ -189,12 +187,11 @@ class HashMap:
                     new_index = hash_value % new_capacity
 
                     # insert key-value pair at this index
-                    new_hash_map._buckets[new_index].insert(item.key, item.value)
                     new_buckets[new_index].insert(item.key, item.value)
 
         # update new values of new hash map
-        self._buckets = new_hash_map._buckets
-        self._capacity = new_hash_map._capacity
+        self._buckets = new_buckets
+        self._capacity = new_capacity
 
         # Check load factor and trigger another resize if needed
         load_factor = self._size / self._capacity
@@ -292,7 +289,13 @@ def find_mode(da: DynamicArray) -> tuple[DynamicArray, int]:
     # use this instance of your Separate Chaining HashMap
 
     # recommended to use separate chaining hash map instance provided in the function's skeleton code.
-    map = HashMap()
+    frequency_map = HashMap()
+    #
+    # for num in range(da.length()):
+    #     if da[num].contains(num)
+    #
+    # mode = DynamicArray()
+    pass
 
 
 # ------------------- BASIC TESTING ---------------------------------------- #
