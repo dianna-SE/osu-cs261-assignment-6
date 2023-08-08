@@ -166,6 +166,7 @@ class HashMap:
         # not prime, change to next highest prime number
         if not self._is_prime(new_capacity):
             new_capacity = self._next_prime(new_capacity)
+            print("new capacity", new_capacity)
 
         new_buckets = DynamicArray()
 
