@@ -163,9 +163,6 @@ class HashMap:
         if new_capacity < 1:
             return
 
-        # if new_capacity < 1:
-        #     return
-
         # not prime, change to next highest prime number
         if not self._is_prime(new_capacity):
             new_capacity = self._next_prime(new_capacity)
@@ -190,13 +187,19 @@ class HashMap:
 
                     # insert key-value pair at this index
                     new_buckets[new_index].insert(item.key, item.value)
-        #
+
         # if new_capacity > self._size:
         #     new_capacity = new_capacity * 2
         #     self._capacity = new_capacity
 
         # update new values of new hash map
         self._buckets = new_buckets
+
+        # Check load factor and trigger another resize if needed
+        load_factor = self._size / self._capacity
+        if load_factor >= 1:
+            self.resize_table(self._capacity * 2)  # Double the capacity
+
         self._capacity = new_capacity
 
 
