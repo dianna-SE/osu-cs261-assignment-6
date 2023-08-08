@@ -200,6 +200,7 @@ class HashMap:
         load_factor = self._size / self._capacity
         if load_factor >= 1:
             self.resize_table(self._capacity * 2)  # Double the capacity
+            self._capacity = self._capacity * 2
 
     def get(self, key: str):
         """
