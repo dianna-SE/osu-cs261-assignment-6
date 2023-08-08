@@ -176,7 +176,11 @@ class HashMap:
             # rehash existing key-value pairs into new hash map
             if self._buckets[num].length() != 0:
                 for item in self._buckets[num]:
-                    new_hash_map.put(item.key, item.value)
+
+                    hash_value = self._hash_function(item.key)
+                    index = hash_value % new_capacity  # index = hash % array_size
+
+                    new_hash_map._buckets[index].insert(item.key, item.value)
 
         # update new values of new hash map
         self._buckets = new_hash_map._buckets
