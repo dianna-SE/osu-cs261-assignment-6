@@ -246,7 +246,8 @@ class HashMap:
         for item in bucket:
             if item.key == key:
                 bucket.remove(key)
-                return
+
+        self._size -= 1
 
     def get_keys_and_values(self) -> DynamicArray:
         """
