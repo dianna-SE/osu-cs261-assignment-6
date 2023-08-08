@@ -191,7 +191,7 @@ class HashMap:
 
         # update new values of new hash map
         self._buckets = new_buckets
-        self._capacity = new_capacity
+        self._capacity = self.get_capacity()
 
         # # Check load factor and trigger another resize if needed
         # load_factor = self._size / self._capacity
