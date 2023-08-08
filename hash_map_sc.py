@@ -148,6 +148,12 @@ class HashMap:
         """
         self._buckets = DynamicArray()
 
+        # set new linked lists to each bucket
+        for items in range(self._capacity):
+            self._buckets.append(LinkedList())
+
+        self._size = 0
+
     def resize_table(self, new_capacity: int) -> None:
         """
         Method that changes the capacity of the hash table and rehashes existing key-value pairs into
@@ -157,18 +163,11 @@ class HashMap:
         if new_capacity < 1:
             return
 
-        # If new_capacity is 1 or more, make sure it is a prime number. If not, change to the next
-        #   highest prime number. Use methods _is_prime() and _next_prime() from skeleton code.
-
-        # prime, resize the hash map. This method changes the capacity of the internal hash table.
-        # All existing key/value pairs must remain in the new hash map, and all hash table links
-        # must be rehashed. (Consider calling another HashMap method for this part).
-
         # not prime, change to next highest prime number
         if not self._is_prime(new_capacity):
             new_capacity = self._next_prime(new_capacity)
 
-        # create new hash map to new capacity
+        # prime, resize the hash map and create new hash map to new capacity
         hash_map = HashMap(new_capacity, self._hash_function)
 
         # rehash table links and key-value pairs
@@ -179,7 +178,7 @@ class HashMap:
                 for item in self._buckets[num]:
                     hash_map.put(item.key, item.value)
 
-        # update new values
+        # update new values of new hash map
         self._buckets = hash_map._buckets
         self._size = hash_map._size
         self._capacity = hash_map._capacity
@@ -209,7 +208,6 @@ class HashMap:
         Method that returns True if there exists the key in the hash map and returns False if it does not
         (i.e., empty hash map).
         """
-
         # empty hash map
         if self._size == 0:
             return False
