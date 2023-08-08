@@ -160,8 +160,9 @@ class HashMap:
         the new hash map.
         """
 
-        if new_capacity < 1 or new_capacity <= self._size:
+        if new_capacity < 1:
             return
+
         # if new_capacity < 1:
         #     return
 
@@ -195,7 +196,7 @@ class HashMap:
 
         # Check load factor and trigger another resize if needed
         load_factor = self._size / self._capacity
-        if load_factor >= 1:
+        if load_factor >= 1 or self._capacity > self._size:
             self.resize_table(self._capacity * 2)  # Double the capacity
 
     def get(self, key: str):
