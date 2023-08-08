@@ -242,12 +242,15 @@ class HashMap:
         # find the bucket (dynamic array) corresponding to the hash value
         bucket = self._buckets.get_at_index(index)
 
+
         # existing key -- replace value with new value
         for item in bucket:
             if item.key == key:
                 bucket.remove(key)
+                self._size -= 1
 
-        self._size -= 1
+        if self._size < 0:
+            self._size = 0
 
     def get_keys_and_values(self) -> DynamicArray:
         """
