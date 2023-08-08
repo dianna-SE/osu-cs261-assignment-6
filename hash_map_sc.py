@@ -163,6 +163,9 @@ class HashMap:
         if new_capacity < 1:
             return
 
+        if self._size > new_capacity:
+            return
+
         # not prime, change to next highest prime number
         if not self._is_prime(new_capacity):
             new_capacity = self._next_prime(new_capacity)
