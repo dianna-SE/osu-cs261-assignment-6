@@ -209,7 +209,11 @@ class HashMap:
         Method that returns True if there exists the key in the hash map and returns False if it does not
         (i.e., empty hash map).
         """
-        # existing key
+
+        # empty hash map
+        if self._size == 0:
+            return False
+
         # get hash value and its' index
         hash_value = self._hash_function(key)
         index = hash_value % self.get_capacity()  # index = hash % array_size
