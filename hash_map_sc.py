@@ -178,11 +178,10 @@ class HashMap:
                 for item in self._buckets[num]:
 
                     # get hash value and its' index
-                    hash_value = self._hash_function(item.key)
-                    index = hash_value % new_capacity
+                    new_index = self._hash_function(item.key) % new_capacity
 
                     # insert key-value pair at this index
-                    new_hash_map._buckets[index].insert(item.key, item.value)
+                    new_hash_map._buckets[new_index].insert(item.key, item.value)
 
         # update new values of new hash map
         self._buckets = new_hash_map._buckets
