@@ -242,7 +242,6 @@ class HashMap:
         # find the bucket (dynamic array) corresponding to the hash value
         bucket = self._buckets.get_at_index(index)
 
-
         # existing key -- replace value with new value
         for item in bucket:
             if item.key == key:
@@ -257,8 +256,18 @@ class HashMap:
         Method that returns a dynamic array of indexes of tuple key-value pairs within the hash map
         in any key order.
         """
-        pass
+        keys_and_values = DynamicArray()
 
+        # traverse through hash map and get the bucket
+        for index in range(self._capacity):
+
+            # bucket is not empty, append key-value pairs into dynamic array
+            if self._buckets[index].length() != 0:
+
+                for item in self._buckets[index]:
+                    keys_and_values.append((item.key, item.value))
+
+        return keys_and_values
 
 def find_mode(da: DynamicArray) -> tuple[DynamicArray, int]:
     """
@@ -443,18 +452,18 @@ if __name__ == "__main__":
     print(m.get('key1'))
     m.remove('key4')
 
-    # print("\nPDF - get_keys_and_values example 1")
-    # print("------------------------")
-    # m = HashMap(11, hash_function_2)
-    # for i in range(1, 6):
-    #     m.put(str(i), str(i * 10))
-    # print(m.get_keys_and_values())
-    #
-    # m.put('20', '200')
-    # m.remove('1')
-    # m.resize_table(2)
-    # print(m.get_keys_and_values())
-    #
+    print("\nPDF - get_keys_and_values example 1")
+    print("------------------------")
+    m = HashMap(11, hash_function_2)
+    for i in range(1, 6):
+        m.put(str(i), str(i * 10))
+    print(m.get_keys_and_values())
+
+    m.put('20', '200')
+    m.remove('1')
+    m.resize_table(2)
+    print(m.get_keys_and_values())
+
     # print("\nPDF - find_mode example 1")
     # print("-----------------------------")
     # da = DynamicArray(["apple", "apple", "grape", "melon", "peach"])
