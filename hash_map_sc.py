@@ -191,14 +191,14 @@ class HashMap:
                     new_hash_map._buckets[new_index].insert(item.key, item.value)
                     new_buckets[new_index].insert(item.key, item.value)
 
-        # update new values of new hash map
-        self._buckets = new_hash_map._buckets
-        self._capacity = new_hash_map._capacity
-
         # Check load factor and trigger another resize if needed
         load_factor = self._size / self._capacity
         if load_factor >= 1:
             self.resize_table(self._capacity * 2)  # Double the capacity
+
+        # update new values of new hash map
+        self._buckets = new_hash_map._buckets
+        self._capacity = new_hash_map._capacity
 
     def get(self, key: str):
         """
