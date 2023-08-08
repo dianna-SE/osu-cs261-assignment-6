@@ -160,10 +160,10 @@ class HashMap:
         the new hash map.
         """
 
-        # if new_capacity < 1 or new_capacity <= self._size:
-        #     return
-        if new_capacity < 1:
+        if new_capacity < 1 or new_capacity <= self._size:
             return
+        # if new_capacity < 1:
+        #     return
 
         # not prime, change to next highest prime number
         if not self._is_prime(new_capacity):
@@ -191,13 +191,12 @@ class HashMap:
 
         # update new values of new hash map
         self._buckets = new_buckets
-        self._capacity = self.get_capacity()
+        self._capacity = new_capacity
 
-        # # Check load factor and trigger another resize if needed
-        # load_factor = self._size / self._capacity
-        # if load_factor >= 1:
-        #     self.resize_table(self._capacity * 2)  # Double the capacity
-        #     # self._capacity = self._capacity
+        # Check load factor and trigger another resize if needed
+        load_factor = self._size / self._capacity
+        if load_factor >= 1:
+            self.resize_table(self._capacity * 2)  # Double the capacity
 
     def get(self, key: str):
         """
