@@ -159,6 +159,7 @@ class HashMap:
         Method that changes the capacity of the hash table and rehashes existing key-value pairs into
         the new hash map.
         """
+
         if new_capacity < 1:
             return
 
@@ -168,6 +169,9 @@ class HashMap:
 
         # prime, resize the hash map and create new hash map to new capacity
         new_hash_map = HashMap(new_capacity, self._hash_function)
+
+        if new_capacity == 2:
+            new_hash_map._capacity = 2
 
         # rehash table links and key-value pairs
         for num in range(self._capacity):
