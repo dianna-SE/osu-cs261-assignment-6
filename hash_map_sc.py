@@ -160,10 +160,11 @@ class HashMap:
         the new hash map.
         """
 
-        if new_capacity < 1 or new_capacity <= self._size:
+        # if new_capacity < 1 or new_capacity <= self._size:
+        #     return
+        if new_capacity < 1:
             return
 
-        print("old load factor", self.table_load())
         # not prime, change to next highest prime number
         if not self._is_prime(new_capacity):
             new_capacity = self._next_prime(new_capacity)
@@ -191,7 +192,6 @@ class HashMap:
                     new_hash_map._buckets[new_index].insert(item.key, item.value)
                     new_buckets[new_index].insert(item.key, item.value)
 
-        print("new load factor", self.table_load())
         # update new values of new hash map
         self._buckets = new_hash_map._buckets
         self._capacity = new_hash_map._capacity
