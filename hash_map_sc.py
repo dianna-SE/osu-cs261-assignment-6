@@ -173,9 +173,7 @@ class HashMap:
         # traverse through hash map
         for num in range(self._capacity):
 
-            # rehash existing key-value pairs into new hash map
-
-            # if the index of this bucket is NOT empty, rehash key-value pairs
+            # if the length this bucket at this index is NOT empty, rehash key-value pairs
             if self._buckets[num].length():
                 for item in self._buckets[num]:
 
@@ -237,7 +235,18 @@ class HashMap:
         """
         Method that simply removes the given key-value pair from the hash map.
         """
-        pass
+        # get hash value and its' index
+        hash_value = self._hash_function(key)
+        index = hash_value % self.get_capacity()  # index = hash % array_size
+
+        # find the bucket (dynamic array) corresponding to the hash value
+        bucket = self._buckets.get_at_index(index)
+
+        # existing key -- replace value with new value
+        for item in bucket:
+            if item.key == key:
+                bucket.remove(key)
+                return
 
     def get_keys_and_values(self) -> DynamicArray:
         """
@@ -420,16 +429,16 @@ if __name__ == "__main__":
     #     result &= not m.contains_key(str(key + 1))
     # print(result)
 
-    # print("\nPDF - remove example 1")
-    # print("----------------------")
-    # m = HashMap(53, hash_function_1)
-    # print(m.get('key1'))
-    # m.put('key1', 10)
-    # print(m.get('key1'))
-    # m.remove('key1')
-    # print(m.get('key1'))
-    # m.remove('key4')
-    #
+    print("\nPDF - remove example 1")
+    print("----------------------")
+    m = HashMap(53, hash_function_1)
+    print(m.get('key1'))
+    m.put('key1', 10)
+    print(m.get('key1'))
+    m.remove('key1')
+    print(m.get('key1'))
+    m.remove('key4')
+
     # print("\nPDF - get_keys_and_values example 1")
     # print("------------------------")
     # m = HashMap(11, hash_function_2)
