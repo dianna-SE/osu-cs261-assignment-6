@@ -194,13 +194,12 @@ class HashMap:
 
         # update new values of new hash map
         self._buckets = new_buckets
+        self._capacity = new_capacity
 
         # Check load factor and trigger another resize if needed
         load_factor = self._size / self._capacity
         if load_factor >= 1:
-            new_capacity = self._capacity * 2
-
-        self._capacity = new_capacity
+            self.resize_table(new_capacity * 2)  # Double the capacity
 
 
     def get(self, key: str):
