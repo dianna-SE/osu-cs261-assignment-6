@@ -159,7 +159,6 @@ class HashMap:
         Method that changes the capacity of the hash table and rehashes existing key-value pairs into
         the new hash map.
         """
-        # first check new_capacity is NOT less than 1; if so, method does nothing.
         if new_capacity < 1:
             return
 
@@ -168,21 +167,25 @@ class HashMap:
             new_capacity = self._next_prime(new_capacity)
 
         # prime, resize the hash map and create new hash map to new capacity
-        hash_map = HashMap(new_capacity, self._hash_function)
+        new_hash_map = HashMap(new_capacity, self._hash_function)
 
         # rehash table links and key-value pairs
         for num in range(self._capacity):
 
-            # add existing key-value pairs if buckets are not empty:
+            # rehash existing key-value pairs into new hash map
             if self._buckets[num].length() != 0:
                 for item in self._buckets[num]:
-                    hash_map.put(item.key, item.value)
+                    new_hash_map.put(item.key, item.value)
+
+        # count the new size for each bucket (linked list)
+        new_size = 0
+        for num in range(self._capacity):
+            new_size += self._buckets[num].length()
 
         # update new values of new hash map
-        self._buckets = hash_map._buckets
-        self._size = hash_map._size
-        self._capacity = hash_map._capacity
-
+        self._buckets = new_hash_map._buckets
+        self._size = new_hash_map._size
+        self._capacity = new_hash_map._capacity
 
     def get(self, key: str):
         """
