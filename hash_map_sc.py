@@ -160,11 +160,12 @@ class HashMap:
         the new hash map.
         """
 
-        if new_capacity < 1:
+        if new_capacity <= 1:
             return
 
         print("old capacity", new_capacity)
         # not prime, change to next highest prime number
+
         if not self._is_prime(new_capacity):
             new_capacity = self._next_prime(new_capacity)
 
