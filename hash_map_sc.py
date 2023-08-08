@@ -170,19 +170,21 @@ class HashMap:
         # prime, resize the hash map and create new hash map to new capacity
         new_hash_map = HashMap(new_capacity, self._hash_function)
 
-        # rehash table links and key-value pairs
+        # traverse through hash map
         for num in range(self._capacity):
 
             # rehash existing key-value pairs into new hash map
+
+            # if the index of this bucket is NOT empty, rehash key-value pairs
             if self._buckets[num].length():
-                for item in self._buckets.get_at_index(num):
+                for item in self._buckets[num]:
 
                     # get hash value and its' index
                     hash_value = self._hash_function(item.key)
                     index = hash_value % new_capacity
 
                     # insert key-value pair at this index
-                    new_hash_map._buckets.get_at_index(index).insert(item.key, item.value)
+                    new_hash_map._buckets[index].insert(item.key, item.value)
 
         # update new values of new hash map
         self._buckets = new_hash_map._buckets
@@ -342,13 +344,13 @@ if __name__ == "__main__":
     # m.clear()
     # print(m.get_size(), m.get_capacity())
 
-    # print("\nPDF - resize example 1")
-    # print("----------------------")
-    # m = HashMap(20, hash_function_1)
-    # m.put('key1', 10)
-    # print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
-    # m.resize_table(30)
-    # print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
+    print("\nPDF - resize example 1")
+    print("----------------------")
+    m = HashMap(20, hash_function_1)
+    m.put('key1', 10)
+    print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
+    m.resize_table(30)
+    print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
 
     print("\nPDF - resize example 2")
     print("----------------------")
