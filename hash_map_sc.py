@@ -199,6 +199,7 @@ class HashMap:
         load_factor = self._size / self._capacity
         if load_factor >= 1:
             self.resize_table(self._capacity * 2)  # Double the capacity
+            new_capacity = self._capacity * 2
 
         self._capacity = new_capacity
 
