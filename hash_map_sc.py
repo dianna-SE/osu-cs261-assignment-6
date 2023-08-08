@@ -170,9 +170,6 @@ class HashMap:
         # prime, resize the hash map and create new hash map to new capacity
         new_hash_map = HashMap(new_capacity, self._hash_function)
 
-        if new_capacity == 2:
-            new_hash_map._capacity = 2
-
         # rehash table links and key-value pairs
         for num in range(self._capacity):
 
@@ -189,7 +186,7 @@ class HashMap:
         # update new values of new hash map
         self._buckets = new_hash_map._buckets
         self._size = new_hash_map._size
-        self._capacity = new_hash_map._capacity
+        self._capacity = new_capacity
 
     def get(self, key: str):
         """
