@@ -163,13 +163,26 @@ class HashMap:
         # prime, resize the hash map. This method changes the capacity of the internal hash table.
         # All existing key/value pairs must remain in the new hash map, and all hash table links
         # must be rehashed. (Consider calling another HashMap method for this part).
-        if self._is_prime(new_capacity):
-            new_buckets = HashMap(new_capacity)
-
-
 
         # not prime, change to next highest prime number
-        next_prime_capacity = self._next_prime(new_capacity)
+        if not self._is_prime(new_capacity):
+            new_capacity = self._next_prime(new_capacity)
+
+        # create new hash map to new capacity
+        hash_map = HashMap(new_capacity, self._hash_function)
+
+        # rehash table links and key-value pairs
+        for num in range(self._capacity):
+
+            # add existing key-value pairs if buckets are not empty:
+            if self._buckets[num].length() != 0:
+                for item in self._buckets[num]:
+                    hash_map.put(item.key, item.value)
+
+        # update new values
+        self._buckets = hash_map._buckets
+        self._size = hash_map._size
+        self._capacity = hash_map._capacity
 
 
     def get(self, key: str):
