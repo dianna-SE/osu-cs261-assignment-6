@@ -163,6 +163,7 @@ class HashMap:
         if new_capacity < 1:
             return
 
+        print("old capacity", new_capacity)
         # not prime, change to next highest prime number
         if not self._is_prime(new_capacity):
             new_capacity = self._next_prime(new_capacity)
@@ -178,7 +179,8 @@ class HashMap:
                 for item in self._buckets[num]:
 
                     # get hash value and its' index
-                    new_index = self._hash_function(item.key) % new_capacity
+                    hash_value = self._hash_function(item.key)
+                    new_index = hash_value % new_capacity
 
                     # insert key-value pair at this index
                     new_hash_map._buckets[new_index].insert(item.key, item.value)
@@ -186,6 +188,7 @@ class HashMap:
         # update new values of new hash map
         self._buckets = new_hash_map._buckets
         self._capacity = new_hash_map._capacity
+        print("new capacity", self._capacity)
 
 
     def get(self, key: str):
