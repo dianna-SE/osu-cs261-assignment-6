@@ -190,7 +190,7 @@ class HashMap:
 
         # update new values of new hash map
         self._buckets = new_hash_map._buckets
-        self._capacity = new_capacity
+        self._capacity = new_hash_map._capacity
 
 
     def get(self, key: str):
