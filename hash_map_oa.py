@@ -95,38 +95,33 @@ class HashMap:
         """
         new_entry = HashEntry(key, value)
 
-        # table must resize to DOUBLE current capacity when this method is called and load factor >= 0.5
+        # resize if load factor greater than or equal to 0.5
         load_factor = self.table_load()
         if load_factor >= 0.5:
             double_capacity = self._capacity * 2
             self.resize_table(double_capacity)
 
-        # Get the hash value and its index
+        # get the hash value and its index
         hash_value = self._hash_function(key)
         initial_index = hash_value % self.get_capacity()
         index = initial_index
 
-        # # Probing loop
-        # j = 0
-        # while self._buckets[index] is not None:
-        #     if not self._buckets[index].is_tombstone and self._buckets[index].key == key:
-        #         # Update existing key's value
-        #         self._buckets[index].value = value
-        #         return
-        #
-        #     # Compute the next index in the probing sequence and repeat
-        #     j += 1
-        #     index = (initial_index + j ** 2) % self._capacity
+        # quadratic probing loop
+        j = 0
+        while self._buckets[index] and self._buckets[index].key != key:
 
-        # Insert at the empty spot or tombstone
-        if not self._buckets[index] or self._buckets[index].is_tombstone:
+            # tombstone exists or this initial index is empty
+            if self._buckets[index].is_tombstone or not self._buckets[index]:
+                break
+
+            # compute the next index in the probing sequence and repeat
+            j += 1
+            index = (initial_index + j ** 2) % self._capacity
+
+        # insert key-value pairs at this index
+        if self._buckets[index] is None or self._buckets[index].is_tombstone:
             self._buckets[index] = new_entry
             self._size += 1
-
-
-
-
-
 
     def table_load(self) -> float:
         """
@@ -138,7 +133,15 @@ class HashMap:
         """
         Method that simply returns how many empty buckets exist within the hash table.
         """
-        pass
+        # buckets are slots inside the hash table
+        buckets = 0
+
+        # traverse through the buckets
+        for num in range(self._capacity):
+            if not self._buckets[num] or self._buckets[num].is_tombstone:
+                buckets += 1
+
+        return buckets
 
     def resize_table(self, new_capacity: int) -> None:
         """
@@ -222,46 +225,46 @@ if __name__ == "__main__":
     #     if i % 10 == 9:
     #         print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
 
-    print("\nPDF - table_load example 1")
-    print("--------------------------")
-    m = HashMap(101, hash_function_1)
-    print(round(m.table_load(), 2))
-    m.put('key1', 10)
-    print(round(m.table_load(), 2))
-    m.put('key2', 20)
-    print(round(m.table_load(), 2))
-    m.put('key1', 30)
-    print(round(m.table_load(), 2))
-
-    print("\nPDF - table_load example 2")
-    print("--------------------------")
-    m = HashMap(53, hash_function_1)
-    for i in range(50):
-        m.put('key' + str(i), i * 100)
-        if i % 10 == 0:
-            print(round(m.table_load(), 2), m.get_size(), m.get_capacity())
-
-    # print("\nPDF - empty_buckets example 1")
-    # print("-----------------------------")
+    # print("\nPDF - table_load example 1")
+    # print("--------------------------")
     # m = HashMap(101, hash_function_1)
-    # print(m.empty_buckets(), m.get_size(), m.get_capacity())
+    # print(round(m.table_load(), 2))
     # m.put('key1', 10)
-    # print(m.empty_buckets(), m.get_size(), m.get_capacity())
+    # print(round(m.table_load(), 2))
     # m.put('key2', 20)
-    # print(m.empty_buckets(), m.get_size(), m.get_capacity())
+    # print(round(m.table_load(), 2))
     # m.put('key1', 30)
-    # print(m.empty_buckets(), m.get_size(), m.get_capacity())
-    # m.put('key4', 40)
-    # print(m.empty_buckets(), m.get_size(), m.get_capacity())
+    # print(round(m.table_load(), 2))
     #
-    # print("\nPDF - empty_buckets example 2")
-    # print("-----------------------------")
+    # print("\nPDF - table_load example 2")
+    # print("--------------------------")
     # m = HashMap(53, hash_function_1)
-    # for i in range(150):
+    # for i in range(50):
     #     m.put('key' + str(i), i * 100)
-    #     if i % 30 == 0:
-    #         print(m.empty_buckets(), m.get_size(), m.get_capacity())
-    #
+    #     if i % 10 == 0:
+    #         print(round(m.table_load(), 2), m.get_size(), m.get_capacity())
+
+    print("\nPDF - empty_buckets example 1")
+    print("-----------------------------")
+    m = HashMap(101, hash_function_1)
+    print(m.empty_buckets(), m.get_size(), m.get_capacity())
+    m.put('key1', 10)
+    print(m.empty_buckets(), m.get_size(), m.get_capacity())
+    m.put('key2', 20)
+    print(m.empty_buckets(), m.get_size(), m.get_capacity())
+    m.put('key1', 30)
+    print(m.empty_buckets(), m.get_size(), m.get_capacity())
+    m.put('key4', 40)
+    print(m.empty_buckets(), m.get_size(), m.get_capacity())
+
+    print("\nPDF - empty_buckets example 2")
+    print("-----------------------------")
+    m = HashMap(53, hash_function_1)
+    for i in range(150):
+        m.put('key' + str(i), i * 100)
+        if i % 30 == 0:
+            print(m.empty_buckets(), m.get_size(), m.get_capacity())
+
     # print("\nPDF - resize example 1")
     # print("----------------------")
     # m = HashMap(20, hash_function_1)
