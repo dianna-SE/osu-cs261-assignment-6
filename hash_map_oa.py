@@ -106,17 +106,17 @@ class HashMap:
         initial_index = hash_value % self.get_capacity()
         index = initial_index
 
-        # Probing loop
-        j = 0
-        while self._buckets[index] is not None:
-            if not self._buckets[index].is_tombstone and self._buckets[index].key == key:
-                # Update existing key's value
-                self._buckets[index].value = value
-                return
-
-            # Compute the next index in the probing sequence and repeat
-            j += 1
-            index = (initial_index + j ** 2) % self._capacity
+        # # Probing loop
+        # j = 0
+        # while self._buckets[index] is not None:
+        #     if not self._buckets[index].is_tombstone and self._buckets[index].key == key:
+        #         # Update existing key's value
+        #         self._buckets[index].value = value
+        #         return
+        #
+        #     # Compute the next index in the probing sequence and repeat
+        #     j += 1
+        #     index = (initial_index + j ** 2) % self._capacity
 
         # Insert at the empty spot or tombstone
         if not self._buckets[index] or self._buckets[index].is_tombstone:
