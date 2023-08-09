@@ -144,6 +144,8 @@ class HashMap:
         if new_capacity < self._size:
             return
 
+        # need to fix this
+
     def get(self, key: str) -> object:
         """
         Method that returns the value using the key and returns None if the key does not exist within
@@ -155,19 +157,21 @@ class HashMap:
 
         # quadratic probing loop
         j = 0
-        while self._buckets[index] and self._buckets[index].key != key:
+        while j < self._capacity:
 
-            # exit loop if tombstone encountered
-            if self._buckets[index].is_tombstone:
-                break
+            if self._buckets[index]:
+
+                # check if the key was found
+                if self._buckets[index] and self._buckets[index].key == key:
+                    return self._buckets[index].value
+
+                # exit loop if tombstone encountered
+                elif self._buckets[index].is_tombstone:
+                    pass
 
             # compute the next index in the probing sequence and repeat
             j += 1
             index = (initial_index + j ** 2) % self._capacity
-
-        # check if the key was found
-        if self._buckets[index] and self._buckets[index].key == key:
-            return self._buckets[index].value
 
         return None
 
@@ -176,29 +180,36 @@ class HashMap:
         Method that returns True if there exists the key in the hash map and returns False if it does not
         (i.e., empty hash map).
         """
-        # empty hash map, return False
+        # empty hash map, return false
         if self._size == 0:
             return False
 
+        # get value at this index using the key
         hash_value = self._hash_function(key)
         initial_index = hash_value % self.get_capacity()
         index = initial_index
 
         # quadratic probing loop
         j = 0
-        while self._buckets[index] and self._buckets[index].key != key:
+        while j < self._capacity:
 
-            # exit loop if tombstone encountered
-            if self._buckets[index].is_tombstone:
-                break
+            if self._buckets[index]:
 
-            # compute the next index in the probing sequence and repeat
+                # key is present
+                if self._buckets[index].key == key:
+                    return True
+
+                # continue probing even if tombstone encountered
+                elif self._buckets[index].is_tombstone:
+                    continue
+
+            # key is not present
+            else:
+                return False
+
+            # compute the next index in the probing sequence
             j += 1
             index = (initial_index + j ** 2) % self._capacity
-
-        # check if the key was found
-        if self._buckets[index] and self._buckets[index].key == key:
-            return True
 
         return False
 
@@ -210,21 +221,20 @@ class HashMap:
         initial_index = hash_value % self.get_capacity()
         index = initial_index
 
-        # Quadratic probing loop
+        # quadratic probing loop
         j = 0
         while self._buckets[index] and self._buckets[index].key != key:
 
-            # Exit loop if tombstone encountered
+            # tombstone encountered, exit
             if self._buckets[index].is_tombstone:
-                break
+                continue
 
-            # Compute the next index in the probing sequence and repeat
+            # compute the next index in the probing sequence and repeat
             j += 1
             index = (initial_index + j ** 2) % self._capacity
 
-        # Check if the key was found
+        # key found, replace with tombstone and decrement size
         if self._buckets[index] and self._buckets[index].key == key:
-            # Mark the entry as a tombstone
             self._buckets[index].is_tombstone = True
             self._size -= 1
 
