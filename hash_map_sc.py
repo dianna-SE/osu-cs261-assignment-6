@@ -189,6 +189,7 @@ class HashMap:
                     new_hash_map.put(item.key, item.value)
 
         # update new values of new hash map
+        self._buckets = new_hash_map._buckets
         self._capacity = new_capacity
 
 
