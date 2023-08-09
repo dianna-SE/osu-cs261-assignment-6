@@ -160,6 +160,7 @@ class HashMap:
         the new hash map.
         """
 
+        # do not resize if capacity is less than 1
         if new_capacity < 1:
             return
 
@@ -167,16 +168,17 @@ class HashMap:
         if not self._is_prime(new_capacity):
             new_capacity = self._next_prime(new_capacity)
 
+        # set new hash map with new capacity
         new_hash_map = HashMap(new_capacity, self._hash_function)
 
         if new_capacity == 2:
             new_hash_map._capacity = 2
 
-        # prime, resize the hash map and create new hash map to new capacity
+        # # rehash key-value pairs from the inner contents of old map
         for num in range(self._capacity):
             bucket = self._buckets[num]
 
-            #  rehash key-value pairs
+            # rehash key-value pairs
             for items in bucket:
                 new_hash_map.put(items.key, items.value)
 
@@ -190,7 +192,7 @@ class HashMap:
         """
         # get the hash using key
         hash_value = self._hash_function(key)
-        index = hash_value % self.get_capacity()  # index = hash % array_size
+        index = hash_value % self.get_capacity()
 
         # get the bucket (dynamic array) corresponding to the hash value
         bucket = self._buckets.get_at_index(index)
@@ -262,24 +264,49 @@ class HashMap:
                     keys_and_values.append((item.key, item.value))
 
         return keys_and_values
-
 def find_mode(da: DynamicArray) -> tuple[DynamicArray, int]:
     """
     Method that takes in a dynamic array that is either sorted or unsorted and returns a tuple of
     a dynamic array that establishes the mode and frequency for the mode in O(n) runtime complexity.
     There can be multiple modes if they are the same frequencies.
     """
-    # if you'd like to use a hash map,
-    # use this instance of your Separate Chaining HashMap
+    frequency = HashMap()
+    highest_frequency = 0
 
-    # recommended to use separate chaining hash map instance provided in the function's skeleton code.
-    frequency_map = HashMap()
-    #
-    # for num in range(da.length()):
-    #     if da[num].contains(num)
-    #
-    # mode = DynamicArray()
-    pass
+    for index in range(da.length()):
+        key = da[index]
+
+        # number exists, increment frequency
+        if frequency.contains_key(key):
+            value = frequency.get(key) + 1
+            frequency.put(key, value)
+
+        # number doesn't exist, add it into hash map
+        else:
+            frequency.put(key, 1)
+
+    # establish a mode array and key-value pairs from hash map
+    mode = DynamicArray()
+    hash_map = frequency.get_keys_and_values()
+
+    # traverse through to collect highest frequency
+    for num in range(hash_map.length()):
+        value = hash_map[num][1]
+
+        # replace if there is a higher frequency
+        if value > highest_frequency:
+            highest_frequency = value
+
+    # append keys that have the same highest frequency
+    for index in range(hash_map.length()):
+        key = hash_map[index][0]
+        value = hash_map[index][1]
+
+        if value == highest_frequency:
+            mode.append(key)
+
+    return mode, highest_frequency
+
 
 
 # ------------------- BASIC TESTING ---------------------------------------- #
@@ -365,36 +392,36 @@ if __name__ == "__main__":
     # print(m.get_size(), m.get_capacity())
     # m.clear()
     # print(m.get_size(), m.get_capacity())
-
-    print("\nPDF - resize example 1")
-    print("----------------------")
-    m = HashMap(20, hash_function_1)
-    m.put('key1', 10)
-    print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
-    m.resize_table(30)
-    print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
-
-    print("\nPDF - resize example 2")
-    print("----------------------")
-    m = HashMap(75, hash_function_2)
-    keys = [i for i in range(1, 1000, 13)]
-    for key in keys:
-        m.put(str(key), key * 42)
-    print(m.get_size(), m.get_capacity())
-
-    for capacity in range(111, 1000, 117):
-        m.resize_table(capacity)
-
-        m.put('some key', 'some value')
-        result = m.contains_key('some key')
-        m.remove('some key')
-
-        for key in keys:
-            # all inserted keys must be present
-            result &= m.contains_key(str(key))
-            # NOT inserted keys must be absent
-            result &= not m.contains_key(str(key + 1))
-        print(capacity, result, m.get_size(), m.get_capacity(), round(m.table_load(), 2))
+    #
+    # print("\nPDF - resize example 1")
+    # print("----------------------")
+    # m = HashMap(20, hash_function_1)
+    # m.put('key1', 10)
+    # print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
+    # m.resize_table(30)
+    # print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
+    #
+    # print("\nPDF - resize example 2")
+    # print("----------------------")
+    # m = HashMap(75, hash_function_2)
+    # keys = [i for i in range(1, 1000, 13)]
+    # for key in keys:
+    #     m.put(str(key), key * 42)
+    # print(m.get_size(), m.get_capacity())
+    #
+    # for capacity in range(111, 1000, 117):
+    #     m.resize_table(capacity)
+    #
+    #     m.put('some key', 'some value')
+    #     result = m.contains_key('some key')
+    #     m.remove('some key')
+    #
+    #     for key in keys:
+    #         # all inserted keys must be present
+    #         result &= m.contains_key(str(key))
+    #         # NOT inserted keys must be absent
+    #         result &= not m.contains_key(str(key + 1))
+    #     print(capacity, result, m.get_size(), m.get_capacity(), round(m.table_load(), 2))
 
     # print("\nPDF - get example 1")
     # print("-------------------")
@@ -464,21 +491,21 @@ if __name__ == "__main__":
     # m.resize_table(2)
     # print(m.get_keys_and_values())
 
-    # print("\nPDF - find_mode example 1")
-    # print("-----------------------------")
-    # da = DynamicArray(["apple", "apple", "grape", "melon", "peach"])
-    # mode, frequency = find_mode(da)
-    # print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}")
-    #
-    # print("\nPDF - find_mode example 2")
-    # print("-----------------------------")
-    # test_cases = (
-    #     ["Arch", "Manjaro", "Manjaro", "Mint", "Mint", "Mint", "Ubuntu", "Ubuntu", "Ubuntu"],
-    #     ["one", "two", "three", "four", "five"],
-    #     ["2", "4", "2", "6", "8", "4", "1", "3", "4", "5", "7", "3", "3", "2"]
-    # )
-    #
-    # for case in test_cases:
-    #     da = DynamicArray(case)
-    #     mode, frequency = find_mode(da)
-    #     print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}\n")
+    print("\nPDF - find_mode example 1")
+    print("-----------------------------")
+    da = DynamicArray(["apple", "apple", "grape", "melon", "peach"])
+    mode, frequency = find_mode(da)
+    print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}")
+
+    print("\nPDF - find_mode example 2")
+    print("-----------------------------")
+    test_cases = (
+        ["Arch", "Manjaro", "Manjaro", "Mint", "Mint", "Mint", "Ubuntu", "Ubuntu", "Ubuntu"],
+        ["one", "two", "three", "four", "five"],
+        ["2", "4", "2", "6", "8", "4", "1", "3", "4", "5", "7", "3", "3", "2"]
+    )
+
+    for case in test_cases:
+        da = DynamicArray(case)
+        mode, frequency = find_mode(da)
+        print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}\n")
