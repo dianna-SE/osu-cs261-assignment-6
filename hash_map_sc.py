@@ -160,30 +160,6 @@ class HashMap:
         the new hash map.
         """
 
-        # if new_capacity < 1:
-        #     return
-        #
-        # # not prime, change to next highest prime number
-        # if not self._is_prime(new_capacity):
-        #     new_capacity = self._next_prime(new_capacity)
-        #
-        # new_hash_map = HashMap(new_capacity, self._hash_function)
-        #
-        # if new_capacity == 2:
-        #     new_hash_map._capacity = 2
-        #
-        # # prime, resize the hash map and create new hash map to new capacity
-        # for num in range(self._capacity):
-        #
-        #     # if the length this bucket at this index is NOT empty, rehash key-value pairs
-        #     if self._buckets[num].length():
-        #         for item in self._buckets[num]:
-        #
-        #             self.put(item.key, item.value)
-        #
-        # # update new values of new hash map
-        # self._buckets, self._capacity = new_hash_map._buckets, new_hash_map._capacity
-
         if new_capacity < 1:
             return
 
