@@ -173,6 +173,9 @@ class HashMap:
 
         new_hash_map = HashMap(new_capacity, self._hash_function)
 
+        if new_capacity == 2:
+            new_hash_map._capacity = 2
+
         # prime, resize the hash map and create new hash map to new capacity
         # traverse through hash map
         for num in range(self._capacity):
