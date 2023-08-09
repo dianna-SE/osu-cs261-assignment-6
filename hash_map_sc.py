@@ -160,34 +160,52 @@ class HashMap:
         the new hash map.
         """
 
+        # if new_capacity < 1:
+        #     return
+        #
+        # # not prime, change to next highest prime number
+        # if not self._is_prime(new_capacity):
+        #     new_capacity = self._next_prime(new_capacity)
+        #
+        # new_hash_map = HashMap(new_capacity, self._hash_function)
+        #
+        # if new_capacity == 2:
+        #     new_hash_map._capacity = 2
+        #
+        # # prime, resize the hash map and create new hash map to new capacity
+        # for num in range(self._capacity):
+        #
+        #     # if the length this bucket at this index is NOT empty, rehash key-value pairs
+        #     if self._buckets[num].length():
+        #         for item in self._buckets[num]:
+        #
+        #             self.put(item.key, item.value)
+        #
+        # # update new values of new hash map
+        # self._buckets, self._capacity = new_hash_map._buckets, new_hash_map._capacity
+
         if new_capacity < 1:
             return
 
         # not prime, change to next highest prime number
-        print("is 2 prime?", self._is_prime(2))
         if not self._is_prime(new_capacity):
             new_capacity = self._next_prime(new_capacity)
 
-        for num in range(new_capacity):
-            self._buckets.append(LinkedList())
-
         new_hash_map = HashMap(new_capacity, self._hash_function)
+
+        # if new_capacity == 2:
+        #     new_hash_map._capacity = 2
 
         # prime, resize the hash map and create new hash map to new capacity
         for num in range(self._capacity):
+            bucket = self._buckets[num]
 
             # if the length this bucket at this index is NOT empty, rehash key-value pairs
-            if self._buckets[num].length():
-                for item in self._buckets[num]:
-
-                    new_hash_map.put(item.key, item.value)
-
-        if new_capacity == 2:
-            new_hash_map._capacity = 2
+            for items in bucket:
+                new_hash_map.put(items.key, items.value)
 
         # update new values of new hash map
         self._buckets, self._capacity = new_hash_map._buckets, new_hash_map._capacity
-
 
     def get(self, key: str):
         """
