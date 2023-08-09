@@ -192,10 +192,10 @@ class HashMap:
             print("not prime! setting to the next prime number.", new_capacity)
             new_capacity = self._next_prime(new_capacity)
 
+        if new_capacity == 2:
+            new_capacity = 2
+
         new_hash_map = HashMap(new_capacity, self._hash_function)
-        #
-        # if new_capacity == 2:
-        #     new_hash_map._capacity = 2
 
         # prime, resize the hash map and create new hash map to new capacity
         for num in range(self._capacity):
