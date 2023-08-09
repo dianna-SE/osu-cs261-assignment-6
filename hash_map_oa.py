@@ -106,22 +106,23 @@ class HashMap:
         initial_index = hash_value % self.get_capacity()
         index = initial_index
 
-        # quadratic probing loop
         j = 0
-        while self._buckets[index] and self._buckets[index].key != key:
+        while j < self._capacity:
 
-            # tombstone exists or this initial index is empty
-            if self._buckets[index].is_tombstone or not self._buckets[index]:
-                break
+            # insert key-value pairs at this index
+            if self._buckets[index] is None or self._buckets[index].is_tombstone:
+                self._buckets[index] = new_entry
+                self._size += 1
+                return
 
-            # compute the next index in the probing sequence and repeat
+            # replace existing value with new value
+            elif self._buckets[index].key == key:
+                self._buckets[index].value = value
+                return
+
+            # traverse to the next index using quadratic probing
             j += 1
             index = (initial_index + j ** 2) % self._capacity
-
-        # insert key-value pairs at this index
-        if self._buckets[index] is None or self._buckets[index].is_tombstone:
-            self._buckets[index] = new_entry
-            self._size += 1
 
     def table_load(self) -> float:
         """
@@ -144,7 +145,21 @@ class HashMap:
         if new_capacity < self._size:
             return
 
-        # need to fix this
+        if not self._is_prime(new_capacity):
+            new_capacity = self._next_prime(new_capacity)
+
+        new_hash_map = HashMap(new_capacity, self._hash_function)
+
+        for num in range(self._capacity):
+            bucket = self._buckets[num]
+
+            # rehash key-value pairs
+            if bucket:
+                new_hash_map.put(bucket.key, bucket.value)
+
+        # update new values of new hash map
+        self._buckets, self._capacity = new_hash_map._buckets, new_hash_map._capacity
+
 
     def get(self, key: str) -> object:
         """
@@ -306,21 +321,21 @@ class HashMap:
 
 if __name__ == "__main__":
 
-    # print("\nPDF - put example 1")
-    # print("-------------------")
-    # m = HashMap(53, hash_function_1)
-    # for i in range(150):
-    #     m.put('str' + str(i), i * 100)
-    #     if i % 25 == 24:
-    #         print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
-    #
-    # print("\nPDF - put example 2")
-    # print("-------------------")
-    # m = HashMap(41, hash_function_2)
-    # for i in range(50):
-    #     m.put('str' + str(i // 3), i * 100)
-    #     if i % 10 == 9:
-    #         print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
+    print("\nPDF - put example 1")
+    print("-------------------")
+    m = HashMap(53, hash_function_1)
+    for i in range(150):
+        m.put('str' + str(i), i * 100)
+        if i % 25 == 24:
+            print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
+
+    print("\nPDF - put example 2")
+    print("-------------------")
+    m = HashMap(41, hash_function_2)
+    for i in range(50):
+        m.put('str' + str(i // 3), i * 100)
+        if i % 10 == 9:
+            print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
 
     # print("\nPDF - table_load example 1")
     # print("--------------------------")
