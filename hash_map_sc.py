@@ -167,7 +167,6 @@ class HashMap:
         if not self._is_prime(new_capacity):
             new_capacity = self._next_prime(new_capacity)
 
-        # this might be something wrong with this
         for num in range(new_capacity):
             self._buckets.append(LinkedList())
 
@@ -177,7 +176,6 @@ class HashMap:
             new_hash_map._capacity = 2
 
         # prime, resize the hash map and create new hash map to new capacity
-        # traverse through hash map
         for num in range(self._capacity):
 
             # if the length this bucket at this index is NOT empty, rehash key-value pairs
@@ -185,8 +183,8 @@ class HashMap:
                 for item in self._buckets[num]:
 
                     # get hash value and its' index
-                    hash_value = self._hash_function(item.key)
-                    new_index = hash_value % new_capacity
+                    # hash_value = self._hash_function(item.key)
+                    # new_index = hash_value % new_capacity
 
                     # insert key-value pair at this index
                     new_hash_map.put(item.key, item.value)
