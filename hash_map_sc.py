@@ -189,10 +189,11 @@ class HashMap:
 
         # not prime, change to next highest prime number
         if not self._is_prime(new_capacity):
+            print("not prime! setting to the next prime number.")
             new_capacity = self._next_prime(new_capacity)
 
         new_hash_map = HashMap(new_capacity, self._hash_function)
-
+        #
         # if new_capacity == 2:
         #     new_hash_map._capacity = 2
 
