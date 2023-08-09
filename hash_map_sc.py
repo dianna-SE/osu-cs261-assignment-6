@@ -187,13 +187,36 @@ class HashMap:
         if new_capacity < 1:
             return
 
-        # not prime, change to next highest prime number
-        if not self._is_prime(new_capacity):
-            print("not prime! setting to the next prime number.", new_capacity)
-            new_capacity = self._next_prime(new_capacity)
+        # # not prime, change to next highest prime number
+        # if not self._is_prime(new_capacity):
+        #     print("not prime! setting to the next prime number.", new_capacity)
+        #     new_capacity = self._next_prime(new_capacity)
+        #
+        # if new_capacity == 2:
+        #     new_capacity = 2
+        while True:
+            is_prime = True
 
-        if new_capacity == 2:
-            new_capacity = 2
+            if new_capacity <= 1:
+                is_prime = False
+
+            elif new_capacity <= 3:
+                is_prime = True
+
+            elif new_capacity % 2 == 0 or new_capacity % 3 == 0:
+                is_prime = False
+
+            else:
+                i = 5
+                while i * i <= new_capacity:
+                    if new_capacity % i == 0 or new_capacity % (i + 2) == 0:
+                        is_prime = False
+                        break
+                    i += 6
+
+            if is_prime:
+                break
+            new_capacity += 1
 
         new_hash_map = HashMap(new_capacity, self._hash_function)
 
