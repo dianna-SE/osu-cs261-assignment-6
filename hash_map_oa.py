@@ -208,7 +208,6 @@ class HashMap:
         initial_index = hash_value % self.get_capacity()
         index = initial_index
 
-        # quadratic probing loop
         j = 0
         while j < self._capacity:
 
@@ -216,7 +215,7 @@ class HashMap:
             if self._buckets[index] and self._buckets[index].key == key:
                 return True
 
-            # compute the next index in the probing sequence
+            # compute the next index in the quadratic probing sequence
             j += 1
             index = (initial_index + j ** 2) % self._capacity
 
@@ -266,12 +265,14 @@ class HashMap:
         """
         keys_and_values = DynamicArray()
 
-        # append any key-value pairs that are not tombstones into hash map
         hash_map = self
 
-        for num in hash_map:
-            if num is not None and num.is_tombstone is False:
-                keys_and_values.append((num.key, num.value))
+        # traverse through array
+        for item in hash_map:
+
+            # append any key-value pairs that are not tombstones into hash map
+            if item is not None and item.is_tombstone is False:
+                keys_and_values.append((item.key, item.value))
 
         return keys_and_values
 
