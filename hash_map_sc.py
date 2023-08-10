@@ -159,7 +159,6 @@ class HashMap:
         Method that changes the capacity of the hash table and rehashes existing key-value pairs into
         the new hash map.
         """
-
         # do not resize if capacity is less than 1
         if new_capacity < 1:
             return
