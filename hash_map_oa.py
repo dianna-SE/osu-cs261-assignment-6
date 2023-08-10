@@ -97,8 +97,8 @@ class HashMap:
 
         # resize if load factor greater than or equal to 0.5
         load_factor = self.table_load()
+
         if load_factor >= 0.5:
-            # print("resize at capacity: ", self._capacity, "size: ", self._size, "load factor: ", self.table_load())
             double_capacity = self._capacity * 2
             self.resize_table(double_capacity)
 
@@ -185,8 +185,8 @@ class HashMap:
                     return self._buckets[index].value
 
                 # exit loop if tombstone encountered
-                elif self._buckets[index].is_tombstone:
-                    pass
+                # elif self._buckets[index].is_tombstone:
+                #     pass
 
             # compute the next index in the probing sequence and repeat
             j += 1
