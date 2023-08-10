@@ -149,7 +149,6 @@ class HashMap:
 
         # check prime and get the next prime if not
         if not self._is_prime(new_capacity):
-            # print(" not prime", self._is_prime(new_capacity))
             new_capacity = self._next_prime(new_capacity)
 
         # create new hash map to rehash innards
@@ -183,7 +182,6 @@ class HashMap:
 
                 # check if the key was found
                 if self._buckets[index].key == key and not self._buckets[index].is_tombstone:
-                    # print("found!")
                     return self._buckets[index].value
 
                 # exit loop if tombstone encountered
@@ -214,19 +212,9 @@ class HashMap:
         j = 0
         while j < self._capacity:
 
-            if self._buckets[index]:
-
-                # key is present
-                if self._buckets[index].key == key:
-                    return True
-
-                # # continue probing even if tombstone encountered
-                # elif self._buckets[index].is_tombstone:
-                #     continue
-
-            # key is not present
-            # else:
-            #     return False
+            # key is present
+            if self._buckets[index] and self._buckets[index].key == key:
+                return True
 
             # compute the next index in the probing sequence
             j += 1
@@ -238,7 +226,6 @@ class HashMap:
         """
         Method that simply removes the given key-value pair from the hash map.
         """
-        # print("hello?", key)
         hash_value = self._hash_function(key)
         initial_index = hash_value % self.get_capacity()
         index = initial_index
@@ -248,6 +235,7 @@ class HashMap:
         while j < self._capacity:
 
             if self._buckets[index]:
+
                 # key found, replace with tombstone and decrement size
                 if self._buckets[index].key == key and not self._buckets[index].is_tombstone:
                     self._buckets[index].is_tombstone = True
