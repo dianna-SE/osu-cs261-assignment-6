@@ -98,6 +98,7 @@ class HashMap:
         # resize if load factor greater than or equal to 0.5
         load_factor = self.table_load()
         if load_factor >= 0.5:
+            # print("resize at capacity: ", self._capacity, "size: ", self._size, "load factor: ", self.table_load())
             double_capacity = self._capacity * 2
             self.resize_table(double_capacity)
 
@@ -142,26 +143,27 @@ class HashMap:
         Method that changes the capacity of the hash table and rehashes existing key-value pairs into
         the new hash map.
         """
-        # if new_capacity < self._size:
-        #     return
-        #
-        # # check prime and get the next prime if not
-        # if not self._is_prime(new_capacity):
-        #     new_capacity = self._next_prime(new_capacity)
-        #
-        # # create new hash map to rehash innards
-        # new_hash_map = HashMap(new_capacity, self._hash_function)
-        #
-        # # rehash key-value pairs
-        # for num in range(self._capacity):
-        #     item = self._buckets[num]
-        #
-        #     if item and not item.is_tombstone:
-        #         new_hash_map.put(item.key, item.value)
-        #
-        # # update new values of new hash map
-        # self._buckets, self._capacity = new_hash_map._buckets, new_hash_map._capacity
-        pass
+        # print("resizing! load factor: ", self.table_load())
+        load_factor = self.table_load()
+        if new_capacity < self._size or load_factor < 0.5:
+            return
+
+        # check prime and get the next prime if not
+        if not self._is_prime(new_capacity):
+            new_capacity = self._next_prime(new_capacity)
+
+        # create new hash map to rehash innards
+        new_hash_map = HashMap(new_capacity, self._hash_function)
+
+        # rehash key-value pairs
+        for num in range(self._capacity):
+            item = self._buckets[num]
+
+            if item and not item.is_tombstone:
+                new_hash_map.put(item.key, item.value)
+
+        # update new values of new hash map
+        self._buckets, self._capacity = new_hash_map._buckets, new_hash_map._capacity
 
     def get(self, key: str) -> object:
         """
@@ -377,39 +379,39 @@ if __name__ == "__main__":
     #     if i % 30 == 0:
     #         print(m.empty_buckets(), m.get_size(), m.get_capacity())
     #
-    # print("\nPDF - resize example 1")
-    # print("----------------------")
-    # m = HashMap(20, hash_function_1)
-    # m.put('key1', 10)
-    # print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
-    # m.resize_table(30)
-    # print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
-    # #
-    # print("\nPDF - resize example 2")
-    # print("----------------------")
-    # m = HashMap(75, hash_function_2)
-    # keys = [i for i in range(25, 1000, 13)]
-    # for key in keys:
-    #     m.put(str(key), key * 42)
-    # print(m.get_size(), m.get_capacity())
+    print("\nPDF - resize example 1")
+    print("----------------------")
+    m = HashMap(20, hash_function_1)
+    m.put('key1', 10)
+    print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
+    m.resize_table(30)
+    print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
     #
-    # for capacity in range(111, 1000, 117):
-    #     m.resize_table(capacity)
-    #
-    #     if m.table_load() > 0.5:
-    #         print(f"Check that the load factor is acceptable after the call to resize_table().\n"
-    #               f"Your load factor is {round(m.table_load(), 2)} and should be less than or equal to 0.5")
-    #
-    #     m.put('some key', 'some value')
-    #     result = m.contains_key('some key')
-    #     m.remove('some key')
-    #
-    #     for key in keys:
-    #         # all inserted keys must be present
-    #         result &= m.contains_key(str(key))
-    #         # NOT inserted keys must be absent
-    #         result &= not m.contains_key(str(key + 1))
-    #     print(capacity, result, m.get_size(), m.get_capacity(), round(m.table_load(), 2))
+    print("\nPDF - resize example 2")
+    print("----------------------")
+    m = HashMap(75, hash_function_2)
+    keys = [i for i in range(25, 1000, 13)]
+    for key in keys:
+        m.put(str(key), key * 42)
+    print(m.get_size(), m.get_capacity())
+
+    for capacity in range(111, 1000, 117):
+        m.resize_table(capacity)
+
+        if m.table_load() > 0.5:
+            print(f"Check that the load factor is acceptable after the call to resize_table().\n"
+                  f"Your load factor is {round(m.table_load(), 2)} and should be less than or equal to 0.5")
+
+        m.put('some key', 'some value')
+        result = m.contains_key('some key')
+        m.remove('some key')
+
+        for key in keys:
+            # all inserted keys must be present
+            result &= m.contains_key(str(key))
+            # NOT inserted keys must be absent
+            result &= not m.contains_key(str(key + 1))
+        print(capacity, result, m.get_size(), m.get_capacity(), round(m.table_load(), 2))
 
     # print("\nPDF - get example 1")
     # print("-------------------")
