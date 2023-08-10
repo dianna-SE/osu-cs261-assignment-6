@@ -144,8 +144,7 @@ class HashMap:
         the new hash map.
         """
         # print("resizing! load factor: ", self.table_load())
-        load_factor = self.table_load()
-        if new_capacity < self._size or load_factor < 0.5:
+        if new_capacity < self._size:
             return
 
         # check prime and get the next prime if not
@@ -164,6 +163,7 @@ class HashMap:
 
         # update new values of new hash map
         self._buckets, self._capacity = new_hash_map._buckets, new_hash_map._capacity
+        self._size = new_hash_map._size
 
     def get(self, key: str) -> object:
         """
@@ -236,25 +236,27 @@ class HashMap:
         """
         Method that simply removes the given key-value pair from the hash map.
         """
+        # print("hello?", key)
         hash_value = self._hash_function(key)
         initial_index = hash_value % self.get_capacity()
         index = initial_index
 
         # quadratic probing loop
         j = 0
-        while self._buckets[index] and self._buckets[index].key != key:
+        while self._buckets[index]:
 
-            # tombstone encountered, exit
-            if self._buckets[index].is_tombstone:
-                continue
+            # key found, replace with tombstone and decrement size
+            if self._buckets[index].key == key and self._buckets[index].is_tombstone is False:
+                break
 
             # compute the next index in the probing sequence and repeat
             j += 1
             index = (initial_index + j ** 2) % self._capacity
 
-        # key found, replace with tombstone and decrement size
+        # key found, replace with tombstone, change to None and decrement size
         if self._buckets[index] and self._buckets[index].key == key:
             self._buckets[index].is_tombstone = True
+            self._buckets[index] = None
             self._size -= 1
 
     def clear(self) -> None:
@@ -378,7 +380,7 @@ if __name__ == "__main__":
     #     m.put('key' + str(i), i * 100)
     #     if i % 30 == 0:
     #         print(m.empty_buckets(), m.get_size(), m.get_capacity())
-    #
+
     print("\nPDF - resize example 1")
     print("----------------------")
     m = HashMap(20, hash_function_1)
@@ -429,7 +431,7 @@ if __name__ == "__main__":
     # for i in range(200, 300, 21):
     #     print(i, m.get(str(i)), m.get(str(i)) == i * 10)
     #     print(i + 1, m.get(str(i + 1)), m.get(str(i + 1)) == (i + 1) * 10)
-
+    #
     # print("\nPDF - contains_key example 1")
     # print("----------------------------")
     # m = HashMap(11, hash_function_1)
@@ -458,16 +460,16 @@ if __name__ == "__main__":
     #     # NOT inserted keys must be absent
     #     result &= not m.contains_key(str(key + 1))
     # print(result)
-    #
-    # print("\nPDF - remove example 1")
-    # print("----------------------")
-    # m = HashMap(53, hash_function_1)
-    # print(m.get('key1'))
-    # m.put('key1', 10)
-    # print(m.get('key1'))
-    # m.remove('key1')
-    # print(m.get('key1'))
-    # m.remove('key4')
+
+    print("\nPDF - remove example 1")
+    print("----------------------")
+    m = HashMap(53, hash_function_1)
+    print(m.get('key1'))
+    m.put('key1', 10)
+    print(m.get('key1'))
+    m.remove('key1')
+    print(m.get('key1'))
+    m.remove('key4')
     #
     # print("\nPDF - clear example 1")
     # print("---------------------")
