@@ -4,7 +4,7 @@
 # Assignment 6 - HashMap (Portfolio Assignment): Open Addressing
 # Due Date: Aug 15, 2023
 # Description: Implement methods within the HashMap class that integrates
-#               proper open addressing techniques.
+#               proper open addressing techniques with quadratic probing.
 
 from a6_include import (DynamicArray, DynamicArrayException, HashEntry,
                         hash_function_1, hash_function_2)
@@ -135,7 +135,7 @@ class HashMap:
         """
         Method that simply returns how many empty buckets exist within the hash table.
         """
-        # m total slots and n filled slots, so m − n open spots.
+        # m total slots (m) and size filled slots (n), so m − n open spots.
         return self._capacity - self._size
 
     def resize_table(self, new_capacity: int) -> None:
@@ -143,7 +143,6 @@ class HashMap:
         Method that changes the capacity of the hash table and rehashes existing key-value pairs into
         the new hash map.
         """
-        # print("resizing! load factor: ", self.table_load())
         if new_capacity < self._size:
             return
 
