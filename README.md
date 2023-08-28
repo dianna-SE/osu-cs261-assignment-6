@@ -6,4 +6,6 @@ Implemented a codebase that handled collisions through open addressing and separ
 ## Separate Chaining
 ## Quadratic Probing
 
-### Instructions
+## Instructions
+- To run the program, download the files and open the files using the IDE of preference.
+- Run the code through your IDE.
