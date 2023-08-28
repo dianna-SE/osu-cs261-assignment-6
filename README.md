@@ -5,3 +5,5 @@ Implemented a codebase that handled collisions through open addressing and separ
 
 ## Separate Chaining
 ## Quadratic Probing
+
+### Instructions
